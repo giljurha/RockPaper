@@ -1,16 +1,24 @@
 import React from "react";
 
-const Box = (props) => {
-  console.log("props", props)
-  return (
-    <div className="box">
-      <h1>{props.title}</h1>
-      <img
-        className="item-img"
-        src={props.item && props.item.img}
-      />
+const Box = ({ title, item, result }) => {
+  const borderColor = result === "win" ? "green" : result === "lose" ? "red" : "black";
 
-      <h2>{props.result}</h2>
+  return (
+    <div style={{
+      border: `4px solid ${borderColor}`,
+      padding: "20px",
+      margin: "10px",
+      textAlign: "center",
+      width: "200px"
+    }}>
+      <h2>{title}</h2>
+      {item && (
+        <>
+          <img src={item.img} alt={item.name} style={{ width: "100px", height: "100px" }} />
+          <h3>{item.name}</h3>
+        </>
+      )}
+      <h3>{result}</h3>
     </div>
   );
 };

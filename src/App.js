@@ -26,39 +26,43 @@ const choice = {
 function App() {
   const [userSelect, setUserSelect] = useState(null)
   const [computerSelect, setComputerSelect] = useState(null)
-  const [result, setResult] = useState("")
-  
+  const [userResult, setUserResult] = useState("")
+  const [computerResult, setComputerResult] = useState("")
 
   const play = (userChoice) => {
-    setUserSelect(choice[userChoice])
-    let computerChoice = randomChoice()
-    setComputerSelect(computerChoice);
-    setResult(judgement(choice[userChoice], computerChoice))
-    
+    const userSelection = choice[userChoice];
+    const computerSelection = randomChoice();
+
+    setUserSelect(userSelection);
+    setComputerSelect(computerSelection);
+
+    const gameResult = judgement(userSelection, computerSelection);
+    setUserResult(gameResult);
+    setComputerResult(gameResult === "win" ? "lose" : gameResult === "lose" ? "win" : "tie");
   }
 
   const judgement = (user, computer) => {
     if (user.name == computer.name) {
       return "tie"
-    } else if(user.name == "Rock") return computer.name == "Scissors" ? "win" : "lose"
-    else if (user.name == "Scissors") return computer.name == "Paper" ? "win" : "lose"
-    else if (user.name == "Paper") return computer == "Rock" ? "win" : "lose";
+    } else if(user.name == "Rock") return computer.name == "Scissors" ? "win" : "lose";
+    else if (user.name == "Scissors") return computer.name == "Paper" ? "win" : "lose";
+    else if (user.name == "Paper") return computer.name == "Rock" ? "win" : "lose";
   }
 
   const randomChoice = () => {
-    let itemArray = Object.keys(choice);
+    const itemArray = Object.keys(choice);
     console.log("item array", itemArray);
-    let randomItem = Math.floor(Math.random()*itemArray.length);
-    let final = itemArray[randomItem];
+    const randomItem = Math.floor(Math.random()*itemArray.length);
+    const final = itemArray[randomItem];
     return choice[final];
   }
 
   return (
     <div>
       <div className='main'>
-      <Box title="You" item={userSelect} result={result}/>
-      <Box title="Computer" item={computerSelect} result={result}/>
-    </div>
+        <Box title="You" item={userSelect} result={userResult}/>
+        <Box title="Computer" item={computerSelect} result={computerResult}/>
+      </div>
       <div className='main'>
         <button onClick={() => play("scissors")}>가위</button>
         <button onClick={() => play("rock")}>바위</button>
